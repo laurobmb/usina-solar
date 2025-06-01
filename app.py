@@ -22,7 +22,6 @@ def listar_clientes(ano):
     if not os.path.exists(caminho):
         return []
     df = pd.read_csv(caminho, encoding='utf-8')
-    # Converter para string para evitar problemas de comparação
     clientes = df['CÓDIGO_DO_CLIENTE'].astype(str).unique().tolist()
     return clientes
 
@@ -67,13 +66,12 @@ def gerar_grafico(ano, cliente):
         title=f'Energia - Cliente {cliente} - {ano}',
         xaxis_title='Mês',
         yaxis_title='kWh',
-        template='plotly_dark',            # template moderno e escuro
+        template='plotly_dark',
         font=dict(family="Arial, sans-serif", size=14, color="white"),
         legend=dict(font=dict(size=12)),
-        hovermode='x unified'              # tooltip unificado ao passar mouse
+        hovermode='x unified'
     )
 
-    # Salvar gráfico como PNG no diretório OUTPUT_DIR (opcional)
     output_path = os.path.join(OUTPUT_DIR, f'{ano}_{cliente}.png')
     pio.write_image(fig, output_path, format='png', scale=2, width=1000, height=600)
 
