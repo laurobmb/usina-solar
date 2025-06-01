@@ -4,40 +4,48 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Dashboard de Energia</title>
-  <!-- Bootstrap CSS -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
-  <!-- CSS personalizado -->
   <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
 </head>
 <body>
   <nav class="navbar navbar-dark">
     <div class="container-fluid">
-      <a class="navbar-brand mx-auto fw-bold fs-2 text-center" href="#">⚡🌞🌞 Panel de Control Solar de Generación de Energía Distribuida 🌞🌞⚡</a>
+      <a class="navbar-brand mx-auto fw-bold fs-2 text-center" href="#" id="navbarTitle">⚡🌞🌞 Painel de Controle Solar de Geração de Energia Distribuída 🌞🌞⚡</a>
     </div>
   </nav>
 
   <div class="container">
+    <div class="row mb-3">
+      <div class="col-12 text-end">
+        <div class="btn-group" role="group" aria-label="Language selection">
+          <button type="button" class="btn btn-secondary" onclick="setLanguage('ptbr')">PT-BR</button>
+          <button type="button" class="btn btn-secondary" onclick="setLanguage('es')">ES</button>
+          <button type="button" class="btn btn-secondary" onclick="setLanguage('en')">EN</button>
+        </div>
+      </div>
+    </div>
+
     <form method="POST" class="row g-3 align-items-end">
       <div class="col-md-4">
-        <label for="ano" class="form-label">Año</label>
+        <label for="ano" class="form-label" data-translate="yearLabel">Ano</label>
         <select id="ano" name="ano" class="form-select" onchange="this.form.submit()">
-          <option value="">Elección del Año</option>
+          <option value="" data-translate="selectYearOption">Eleição do Ano</option>
           {% for ano in anos %}
             <option value="{{ ano }}" {% if ano == ano_selecionado %}selected{% endif %}>{{ ano }}</option>
           {% endfor %}
         </select>
       </div>
       <div class="col-md-4">
-        <label for="cliente" class="form-label">Cliente</label>
+        <label for="cliente" class="form-label" data-translate="clientLabel">Cliente</label>
         <select id="cliente" name="cliente" class="form-select" {% if not clientes %}disabled{% endif %} onchange="this.form.submit()">
-          <option value="">Elección del cliente</option>
+          <option value="" data-translate="selectClientOption">Eleição do cliente</option>
           {% for cli in clientes %}
             <option value="{{ cli }}" {% if cli == cliente_selecionado %}selected{% endif %}>{{ cli }}</option>
           {% endfor %}
         </select>
       </div>
       <div class="col-md-4">
-        <button type="submit" class="btn btn-vermelho w-100">Generar Gráfico</button>
+        <button type="submit" class="btn btn-vermelho w-100" data-translate="generateChartButton">Gerar Gráfico</button>
       </div>
     </form>
 
@@ -53,10 +61,10 @@
     <table class="table table-dark table-bordered table-hover">
       <thead>
         <tr>
-          <th>Mês</th>
-          <th>Costo sin Generación Distribuida (R$)</th>
-          <th>Costo con Generación Distribuida (R$)</th>
-          <th>Economicé (R$)</th>
+          <th data-translate="monthHeader">Mês</th>
+          <th data-translate="costWithoutGDHeader">Custo sem Geração Distribuída (R$)</th>
+          <th data-translate="costWithGDHeader">Custo com Geração Distribuída (R$)</th>
+          <th data-translate="savingsHeader">Economizei (R$)</th>
         </tr>
       </thead>
       <tbody>
@@ -70,12 +78,12 @@
         {% endfor %}
   
         <tr style="font-weight: bold; background-color: #343a40;">
-          <td colspan="3" class="text-end">Ahorro Acumulado del Año</td>
+          <td colspan="3" class="text-end" data-translate="totalSavingsFooter">Economia Acumulada do Ano</td>
           <td>R$ {{ '%.2f'|format(total_economia) }}</td>
         </tr>
 
         <tr style="font-weight: bold; background-color: #343a40;">
-          <td colspan="3" class="text-end">Precio del KWH</td>
+          <td colspan="3" class="text-end" data-translate="kwhPriceFooter">Preço do KWH</td>
           <td>R$ {{ '%.2f'|format(valor_kwh) }}</td>
         </tr>
         
@@ -85,5 +93,74 @@
   {% endif %}  
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    const translations = {
+      ptbr: {
+        navbarTitle: "⚡🌞🌞 Painel de Controle Solar de Geração de Energia Distribuída 🌞🌞⚡",
+        yearLabel: "Ano",
+        selectYearOption: "Eleição do Ano",
+        clientLabel: "Cliente",
+        selectClientOption: "Eleição do cliente",
+        generateChartButton: "Gerar Gráfico",
+        monthHeader: "Mês",
+        costWithoutGDHeader: "Custo sem Geração Distribuída (R$)",
+        costWithGDHeader: "Custo com Geração Distribuída (R$)",
+        savingsHeader: "Economizei (R$)",
+        totalSavingsFooter: "Economia Acumulada do Ano",
+        kwhPriceFooter: "Preço do KWH"
+      },
+      es: {
+        navbarTitle: "⚡🌞🌞 Panel de Control Solar de Generación de Energía Distribuida 🌞🌞⚡",
+        yearLabel: "Año",
+        selectYearOption: "Elección del Año",
+        clientLabel: "Cliente",
+        selectClientOption: "Elección del cliente",
+        generateChartButton: "Generar Gráfico",
+        monthHeader: "Mes",
+        costWithoutGDHeader: "Costo sin Generación Distribuida (R$)",
+        costWithGDHeader: "Costo con Generación Distribuida (R$)",
+        savingsHeader: "Ahorro (R$)",
+        totalSavingsFooter: "Ahorro Acumulado del Año",
+        kwhPriceFooter: "Precio del KWH"
+      },
+      en: {
+        navbarTitle: "⚡🌞🌞 Distributed Energy Generation Solar Control Panel 🌞🌞⚡",
+        yearLabel: "Year",
+        selectYearOption: "Select Year",
+        clientLabel: "Client",
+        selectClientOption: "Select Client",
+        generateChartButton: "Generate Chart",
+        monthHeader: "Month",
+        costWithoutGDHeader: "Cost without Distributed Generation (R$)",
+        costWithGDHeader: "Cost with Distributed Generation (R$)",
+        savingsHeader: "Savings (R$)",
+        totalSavingsFooter: "Accumulated Savings for the Year",
+        kwhPriceFooter: "KWH Price"
+      }
+    };
+
+    function setLanguage(lang) {
+      document.documentElement.lang = lang; // Atualiza o atributo lang do HTML
+      const elementsToTranslate = document.querySelectorAll('[data-translate]');
+
+      elementsToTranslate.forEach(element => {
+        const key = element.getAttribute('data-translate');
+        if (translations[lang] && translations[lang][key]) {
+          element.textContent = translations[lang][key];
+        }
+      });
+
+      // Traduz o título da navbar que tem um ID específico
+      const navbarTitle = document.getElementById('navbarTitle');
+      if (navbarTitle && translations[lang] && translations[lang]['navbarTitle']) {
+        navbarTitle.textContent = translations[lang]['navbarTitle'];
+      }
+    }
+
+    // Define o idioma inicial ao carregar a página
+    document.addEventListener('DOMContentLoaded', () => {
+      setLanguage('ptbr'); // Idioma padrão
+    });
+  </script>
 </body>
 </html>

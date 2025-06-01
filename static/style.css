@@ -49,3 +49,15 @@ button:focus {
       border-color: #a80000;
       color: white;
   }
+
+  /* No seu arquivo style.css */
+.btn-group .btn-secondary {
+  background-color: #6c757d; /* Cor de fundo padrão do Bootstrap secondary */
+  border-color: #6c757d;
+  color: white;
+}
+
+.btn-group .btn-secondary:hover {
+  background-color: #5a6268;
+  border-color: #545b62;
+}
