@@ -10,10 +10,8 @@ def geragrafico(MEU_ARQUIVO):
         print("Coluna 'CÓDIGO_DO_CLIENTE' não encontrada.")
         return
 
-    # Cria a pasta 'photos' se não existir
     os.makedirs('photos', exist_ok=True)
-
-    # Agrupa por CÓDIGO_DO_CLIENTE
+    
     for codigo_cliente, df_cliente in data.groupby('CÓDIGO_DO_CLIENTE'):
         print(f'Gerando gráfico para o cliente: {codigo_cliente}')
 
