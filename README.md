@@ -60,7 +60,12 @@ El proyecto se compone de tres partes principales:
     ```
 2.  **Ejecutar el contenedor:**
     ```bash
-    podman run -it --rm --name usina -p 5000:5000 -v ${PWD}/csv:/app/csv:Z usina_solar:v1
+    podman run -it --rm --name usina \
+        -p 5000:5000 \
+        -v ${PWD}/csv:/app/csv:Z \
+        -v ${PWD}/photos:/app/photos:Z \
+        -e VALOR_KWH=1.2 \
+        usina_solar:v1
     ```
     * `-it`: Modo interactivo y TTY.
     * `--rm`: Elimina el contenedor después de salir.

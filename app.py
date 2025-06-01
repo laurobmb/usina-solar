@@ -95,25 +95,29 @@ def gerar_tabela(ano, cliente):
     if df_cliente.empty:
         return [], 0.0
 
-    valor_kwh = 0.90
+    valor_kwh = float(os.getenv('VALOR_KWH', '0.90'))
 
     for coluna in ['ENERGIA_CONSUMIDA', 'ENERGIA_FATURADA']:
         if coluna not in df_cliente.columns:
             return [], 0.0
 
+    ordem_meses = ['jan', 'fev', 'mar', 'abr', 'mai', 'jun', 'jul', 'ago', 'set', 'out', 'nov', 'dez']
+    df_cliente['MES'] = df_cliente['SITUAÇÃO_MENSAL'].str.extract(r'(^\w{3})')
+    df_cliente['MES'] = pd.Categorical(df_cliente['MES'], categories=ordem_meses, ordered=True)
     df_cliente['CUSTO_SEM_GERACAO_DISTRIBUIDA'] = df_cliente['ENERGIA_CONSUMIDA'] * valor_kwh
     df_cliente['CUSTO_COM_GERACAO_DISTRIBUIDA'] = df_cliente['ENERGIA_FATURADA'] * valor_kwh
     df_cliente['ECONOMIA'] = df_cliente['CUSTO_SEM_GERACAO_DISTRIBUIDA'] - df_cliente['CUSTO_COM_GERACAO_DISTRIBUIDA']
-
-    tabela = df_cliente[['SITUAÇÃO_MENSAL', 'CUSTO_SEM_GERACAO_DISTRIBUIDA', 'CUSTO_COM_GERACAO_DISTRIBUIDA', 'ECONOMIA']].round(2)
-    tabela = tabela.sort_values(by='SITUAÇÃO_MENSAL')
-
+    tabela = df_cliente[['SITUAÇÃO_MENSAL', 'MES', 'CUSTO_SEM_GERACAO_DISTRIBUIDA', 
+                          'CUSTO_COM_GERACAO_DISTRIBUIDA', 'ECONOMIA']].round(2)
+    tabela = tabela.sort_values(by='MES')
+    tabela = tabela.drop(columns='MES')
     total_economia = tabela['ECONOMIA'].sum().round(2)
 
     print("Tabela: ", tabela)
+    print("Valor do KWH:", valor_kwh)
     print("Total Economia do Ano: R$", total_economia)
 
-    return tabela.to_dict(orient='records'), total_economia
+    return tabela.to_dict(orient='records'), total_economia, valor_kwh
 
 
 @app.route('/', methods=['GET', 'POST'])
@@ -125,6 +129,7 @@ def index():
     ano_selecionado = None
     cliente_selecionado = None
     total_economia = 0
+    valor_kwh = 0
     
     if request.method == 'POST':
         ano_selecionado = request.form.get('ano')
@@ -135,7 +140,7 @@ def index():
 
         if ano_selecionado and cliente_selecionado:
             grafico = gerar_grafico(ano_selecionado, cliente_selecionado)
-            tabela, total_economia = gerar_tabela(ano_selecionado, cliente_selecionado)
+            tabela, total_economia, valor_kwh = gerar_tabela(ano_selecionado, cliente_selecionado)
             print(total_economia)
         else:
             total_economia = 0
@@ -147,6 +152,7 @@ def index():
                            tabela=tabela,
                            total_economia=total_economia,
                            ano_selecionado=ano_selecionado,
+                           valor_kwh=valor_kwh,
                            cliente_selecionado=cliente_selecionado)
 
 

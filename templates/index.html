@@ -73,6 +73,12 @@
           <td colspan="3" class="text-end">Ahorro Acumulado del Año</td>
           <td>R$ {{ '%.2f'|format(total_economia) }}</td>
         </tr>
+
+        <tr style="font-weight: bold; background-color: #343a40;">
+          <td colspan="3" class="text-end">Precio del KWH</td>
+          <td>R$ {{ '%.2f'|format(valor_kwh) }}</td>
+        </tr>
+        
       </tbody>
     </table>
   </div>
