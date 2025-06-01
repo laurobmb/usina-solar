@@ -1,5 +1,7 @@
 # ⚡🌞🌞 Panel de Control Solar de Generación de Energía Distribuida 🌞🌞⚡
 
+![Planta de energía solar](./photos/example.jpg)
+
 Este proyecto es un dashboard web interactivo construido con **Flask** (Python) que permite visualizar y analizar datos de consumo, inyección y ahorro de energía para clientes de sistemas de generación de energía solar distribuida. Utiliza datos de archivos CSV para generar gráficos dinámicos y tablas de costos y ahorros.
 
 ## Visión General del Proyecto
@@ -76,6 +78,3 @@ Las principales librerías de Python utilizadas son:
 * `plotly`: Para generación de gráficos interactivos.
 * `os`: Para operaciones de sistema de archivos.
 
-
-
-![Planta de energía solar](./photos/example.jpg)
