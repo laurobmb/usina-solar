@@ -1,0 +1,51 @@
+body {
+    background-color: #121212; /* fundo escuro */
+    color: #eee;
+  }
+  
+.navbar {
+    background-color: #1f1f1f;
+  }
+  
+.container {
+    margin-top: 30px;
+  }
+  
+label {
+    font-weight: 600;
+  }
+  
+select,
+button {
+    background-color: #2a2a2a;
+    color: #eee;
+    border: 1px solid #444;
+  }
+  
+select:focus,
+button:focus {
+    outline: none;
+    box-shadow: 0 0 5px #d40000;
+    border-color: #00bcd4;
+  }
+  
+.plot-container {
+    margin-top: 40px;
+    background-color: #222;
+    padding: 8px;
+    border-radius: 10px;
+    border: 5px solid #d40000;   /* borda laranja, por exemplo */
+    box-shadow: 0 0 12px #a80000; /* sombra na mesma cor */
+  }
+  
+.btn-vermelho {
+    background-color: #d40000;
+    color: white;
+    border: 1px solid #d40000;
+  } 
+
+.btn-vermelho:hover {
+      background-color: #a80000;
+      border-color: #a80000;
+      color: white;
+  }

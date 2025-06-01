@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Dashboard de Energia</title>
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <!-- CSS personalizado -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
+</head>
+<body>
+  <nav class="navbar navbar-dark">
+    <div class="container-fluid">
+      <a class="navbar-brand mx-auto fw-bold fs-2 text-center" href="#">⚡🌞🌞 Panel de Control Solar de Generación de Energía Distribuida 🌞🌞⚡</a>
+    </div>
+  </nav>
+
+  <div class="container">
+    <form method="POST" class="row g-3 align-items-end">
+      <div class="col-md-4">
+        <label for="ano" class="form-label">Año</label>
+        <select id="ano" name="ano" class="form-select" onchange="this.form.submit()">
+          <option value="">Elección del Año</option>
+          {% for ano in anos %}
+            <option value="{{ ano }}" {% if ano == ano_selecionado %}selected{% endif %}>{{ ano }}</option>
+          {% endfor %}
+        </select>
+      </div>
+      <div class="col-md-4">
+        <label for="cliente" class="form-label">Cliente</label>
+        <select id="cliente" name="cliente" class="form-select" {% if not clientes %}disabled{% endif %} onchange="this.form.submit()">
+          <option value="">Elección del cliente</option>
+          {% for cli in clientes %}
+            <option value="{{ cli }}" {% if cli == cliente_selecionado %}selected{% endif %}>{{ cli }}</option>
+          {% endfor %}
+        </select>
+      </div>
+      <div class="col-md-4">
+        <button type="submit" class="btn btn-vermelho w-100">Generar Gráfico</button>
+      </div>
+    </form>
+
+    {% if grafico %}
+      <div class="plot-container">
+        {{ grafico|safe }}
+      </div>
+    {% endif %}
+  </div>
+
+  {% if tabela %}
+  <div class="table-responsive mt-4">
+    <table class="table table-dark table-bordered table-hover">
+      <thead>
+        <tr>
+          <th>Mês</th>
+          <th>Costo sin Generación Distribuida (R$)</th>
+          <th>Costo con Generación Distribuida (R$)</th>
+          <th>Economicé (R$)</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for row in tabela %}
+        <tr>
+          <td>{{ row['SITUAÇÃO_MENSAL'] }}</td>
+          <td>R$ {{ row['CUSTO_SEM_GERACAO_DISTRIBUIDA'] }}</td>
+          <td>R$ {{ row['CUSTO_COM_GERACAO_DISTRIBUIDA'] }}</td>
+          <td>R$ {{ row['ECONOMIA'] }}</td>
+        </tr>
+        {% endfor %}
+  
+        <!-- Linha da soma total da economia -->
+        <tr style="font-weight: bold; background-color: #343a40;">
+          <td colspan="3" class="text-end">Ahorro Acumulado del Año</td>
+          <td>R$ {{ '%.2f'|format(total_economia) }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  {% endif %}  
+  <!-- Bootstrap JS Bundle -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
