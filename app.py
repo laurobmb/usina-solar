@@ -107,8 +107,15 @@ def gerar_tabela(ano, cliente):
     df_cliente['CUSTO_SEM_GERACAO_DISTRIBUIDA'] = df_cliente['ENERGIA_CONSUMIDA'] * valor_kwh
     df_cliente['CUSTO_COM_GERACAO_DISTRIBUIDA'] = df_cliente['ENERGIA_FATURADA'] * valor_kwh
     df_cliente['ECONOMIA'] = df_cliente['CUSTO_SEM_GERACAO_DISTRIBUIDA'] - df_cliente['CUSTO_COM_GERACAO_DISTRIBUIDA']
-    tabela = df_cliente[['SITUAÇÃO_MENSAL', 'MES', 'CUSTO_SEM_GERACAO_DISTRIBUIDA', 
-                          'CUSTO_COM_GERACAO_DISTRIBUIDA', 'ECONOMIA']].round(2)
+
+    tabela = df_cliente[[
+        'SITUAÇÃO_MENSAL',
+        'MES',
+        'CUSTO_SEM_GERACAO_DISTRIBUIDA',
+        'CUSTO_COM_GERACAO_DISTRIBUIDA',
+        'ECONOMIA'
+        ]].round(2)
+
     tabela = tabela.sort_values(by='MES')
     tabela = tabela.drop(columns='MES')
     total_economia = tabela['ECONOMIA'].sum().round(2)
